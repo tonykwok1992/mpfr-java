@@ -44,6 +44,10 @@ make clean
 make -j$JOBS
 
 cd "$ROOT_DIR"
+
+export CC=clang
+export CFLAGS="-Wno-int-conversion -Wno-pointer-sign"
+
 mvn install                                                           \
   -Dmpfr.cppflags="-I$MPFR_DIR/src -I$GMP_DIR"                        \
   -Dmpfr.libs="$MPFR_DIR/src/.libs/libmpfr.a $GMP_DIR/.libs/libgmp.a" \

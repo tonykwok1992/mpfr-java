@@ -5,7 +5,7 @@ VENDOR_DIR="`pwd`/vendor"
 mkdir -p "$VENDOR_DIR"
 cd "$VENDOR_DIR"
 
-curl -OL https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz
+curl -OL https://toolchains.bootlin.com/downloads/releases/sources/gmp-6.2.1/gmp-6.2.1.tar.xz
 mkdir gmp
 tar xf gmp-6.2.1.tar.xz -C gmp --strip-components 1
 rm gmp-6.2.1.tar.xz

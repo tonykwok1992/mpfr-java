@@ -100,33 +100,27 @@ be combined into a universal library using `lipo`:
 
 ```shell
 # On ARM Mac
-./src/main/scripts/ci-download.sh && ./src/main/scripts/ci-build.sh
+./src/main/scripts/ci-download.sh
+cd vendor
+zip -r mpfr_java-1.4-native-src.zip gmp mpfr
+cd ..
+mvn install:install-file \
+  -DgroupId=org.kframework.mpfr_java \
+  -DartifactId=mpfr_java \
+  -Dversion=1.4 \
+  -Dclassifier=native-src \
+  -Dpackaging=zip \
+  -Dfile=vendor/mpfr_java-1.4-native-src.zip
+ls ~/.m2/repository/org/kframework/mpfr_java/mpfr_java/1.4/
+./src/main/scripts/ci-build.sh 
 mkdir temp
 cd temp
 cp ../target/mpfr_java-1.4-osx.jar .
 unzip mpfr_java-1.4-osx.jar
 mv META-INF/native/osx64/libmpfr_java.jnilib libmpfr_java_arm.jnilib
-
-# On Intel Mac
-./src/main/scripts/ci-download.sh && ./src/main/scripts/ci-build.sh
-mkdir temp
-cd temp
-cp ../target/mpfr_java-1.4-osx.jar .
-unzip mpfr_java-1.4-osx.jar
-mv META-INF/native/osx64/libmpfr_java.jnilib libmpfr_java_x86.jnilib
-
-# ... copy _x86, _arm .jnilib files to same machine
-lipo -create -output libmpfr_java.jnilib \
-  libmpfr_java_arm.jnilib libmpfr_java_x86.jnilib
-
-# Verify that the output is a universal library
-file libmpfr_java.jnilib
-
-mv libmpfr_java.jnilib META-INF/native/osx64
-jar cf mpfr_java-1.4-osx.jar META-INF
-cp mpfr_java-1.4-osx.jar ../target
-
-# Deploy following instructions below...
+```
+```
+ cp libmpfr_java.jnilib ~/Library/Java/Extensions
 ```
 
 ### Maven
